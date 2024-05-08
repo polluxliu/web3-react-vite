@@ -20,8 +20,8 @@ body {
   /* For Firefox, Chrome, EDGE 
      scrollbar-width: 可以是 'auto', 'thin', 'none'
      scrollbar-color: 滚动条颜色和轨道颜色 */
-  /* scrollbar-width: thin;
-  scrollbar-color: #e5e7eb #fff; */
+  scrollbar-width: thin;
+  scrollbar-color: #e5e7eb transparent;
 
   /* For Chrome, EDGE, Opera, Others */
   &::-webkit-scrollbar {
@@ -29,7 +29,7 @@ body {
   }
 
   &::-webkit-scrollbar-track {
-    @apply rounded-md bg-transparent;
+    @apply rounded-md bg-white;
   }
 
   &::-webkit-scrollbar-thumb {

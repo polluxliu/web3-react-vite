@@ -125,7 +125,7 @@ const Sidebar: FC = () => {
     "left-0",
     "max-w-64",
     "border-r",
-    "px-1",
+    "px-0.5",
     "z-50",
     "bg-white",
     "transition-transform",
