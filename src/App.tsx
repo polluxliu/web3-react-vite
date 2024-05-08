@@ -1,14 +1,34 @@
 // import { useState } from "react";
 // import reactLogo from "./assets/react.svg";
 // import viteLogo from "/vite.svg";
+import NoImmer from "./NoImmer";
+import Immer from "./Immer";
 import "./App.css";
 import List from "./List";
+import useTitle from "./hooks/useTitle";
+import useMouse from "./hooks/useMouse";
+import useGetInfo from "./hooks/useGetInfo";
+import ClousureTrap from "./ClousureTrap";
 
 function App() {
   // const [count, setCount] = useState(0);
 
+  // useEffect(() => {
+  //   document.title = "我的测试";
+  // }, []);
+
+  useTitle("一起来测试");
+
+  const { x, y } = useMouse();
+
+  const { loading, info } = useGetInfo();
+
   return (
     <>
+      <p>
+        鼠标位置：{x},{y}
+      </p>
+      <p>{loading ? "加载中..." : info}</p>
       {/* <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -31,6 +51,9 @@ function App() {
       </p> */}
 
       <List />
+      <NoImmer />
+      <Immer />
+      <ClousureTrap />
     </>
   );
 }

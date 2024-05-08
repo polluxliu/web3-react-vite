@@ -1,0 +1,14 @@
+.list-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 8px;
+
+  // 嵌套
+  .published-span {
+    color: green;
+  }
+}
+
+.published {
+  background-color: #ccc;
+}
