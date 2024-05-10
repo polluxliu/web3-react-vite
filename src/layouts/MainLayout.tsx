@@ -1,6 +1,6 @@
 import type { FC } from "react";
-import { useState, useEffect, useRef } from "react";
-import { Outlet, useOutletContext, Link } from "react-router-dom";
+import { useState, useEffect, useRef, createContext, useContext } from "react";
+import { Outlet, Link } from "react-router-dom";
 import { HOME_PATH, MANAGE_PATH } from "../router";
 import { useResponsive, useSize, useHover, useEventListener } from "ahooks";
 import logo from "../assets/react.svg";
@@ -10,22 +10,28 @@ import {
   FaAngleRight,
   FaAngleLeft,
 } from "react-icons/fa6";
-import { MenuItem } from "../components/Sidebar";
+import Sidebar, { MenuItem } from "../components/Sidebar";
 
 const topItems = new Array(9).fill(null).map((_, index) => ({
-  id: index + 200,
+  id: String(index + 200),
   title: `gorithms ${index + 1}`,
 }));
 
-type SidebarContext = {
+type SidebarContextType = {
   sidebarOpened: boolean;
   isLargeScreen: boolean;
   topItems: MenuItem[];
 };
 
+const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
+
 // eslint-disable-next-line react-refresh/only-export-components
 export function useSidebar() {
-  return useOutletContext<SidebarContext>();
+  const context = useContext(SidebarContext);
+  if (context === undefined) {
+    throw new Error("useSidebar must be used within a SidebarProvider");
+  }
+  return context;
 }
 
 const MainLayout: FC = () => {
@@ -103,8 +109,8 @@ const MainLayout: FC = () => {
   };
 
   return (
-    <>
-      <nav className="sticky top-0 z-30 flex h-16 items-center justify-center gap-x-8 border-b bg-white px-8 shadow-sm">
+    <div className="flex h-screen flex-col">
+      <nav className="sticky top-0 z-30 flex h-16 flex-none items-center justify-center gap-x-8 border-b bg-white px-8 shadow-sm">
         <button
           className="rounded-full p-2 text-black hover:bg-gray-100 sm:hidden"
           onClick={() => {
@@ -179,7 +185,16 @@ const MainLayout: FC = () => {
           </div>
         </div>
       </nav>
-      <Outlet context={{ sidebarOpened, isLargeScreen, topItems }} />
+      <div className="flex flex-auto overflow-hidden">
+        <SidebarContext.Provider
+          value={{ sidebarOpened, isLargeScreen, topItems }}
+        >
+          <Sidebar />
+        </SidebarContext.Provider>
+        <main className="flex-auto p-3">
+          <Outlet />
+        </main>
+      </div>
       {/* <footer>这里是footer</footer> */}
       {overlayDisplayed && (
         <div
@@ -189,7 +204,7 @@ const MainLayout: FC = () => {
           }}
         ></div>
       )}
-    </>
+    </div>
   );
 };
 

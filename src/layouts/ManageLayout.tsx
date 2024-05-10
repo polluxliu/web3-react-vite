@@ -1,8 +1,12 @@
 import type { FC } from "react";
-import Sidebar from "../components/Sidebar";
 
 const ManageLayout: FC = () => {
-  return <Sidebar />;
+  return (
+    <div className="flex flex-col justify-end">
+      <div>test</div>
+      <div className="flex-auto">test2</div>
+    </div>
+  );
 };
 
 export default ManageLayout;

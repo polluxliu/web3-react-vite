@@ -120,9 +120,7 @@ const Sidebar: FC = () => {
   };
 
   const sidebarClass = classNames(
-    "fixed",
-    "bottom-0",
-    "left-0",
+    "h-full",
     "max-w-64",
     "border-r",
     "px-0.5",
@@ -130,11 +128,16 @@ const Sidebar: FC = () => {
     "bg-white",
     "transition-transform",
     "duration-300",
+    "fixed",
+    "top-0",
+    "bottom-0",
     {
-      "top-16": isLargeScreen,
-      "top-0": !isLargeScreen,
       "translate-x-0": sidebarOpened,
       "-translate-x-full": !sidebarOpened,
+      sticky: sidebarOpened && isLargeScreen,
+      fixed: !sidebarOpened,
+      "top-0": !sidebarOpened,
+      "bottom-0": !sidebarOpened,
       "min-w-64": expanded && isLargeScreen,
     },
   );
