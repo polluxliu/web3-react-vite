@@ -1,11 +1,9 @@
-import axiosInstance from "./ajax";
+import axiosInstance, { ApiResponse } from "./ajax";
 
-export async function getQuestionService() {
+export async function getQuestionService(): Promise<ApiResponse> {
   const url = `/api/test`;
 
   const data = await axiosInstance.get(url);
-
-  // console.log(data);
 
   return data;
 }
