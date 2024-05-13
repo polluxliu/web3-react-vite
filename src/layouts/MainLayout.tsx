@@ -191,7 +191,7 @@ const MainLayout: FC = () => {
         >
           <Sidebar />
         </SidebarContext.Provider>
-        <main className="flex-auto p-3">
+        <main className="scrollbar flex-auto overflow-auto p-8">
           <Outlet />
         </main>
       </div>

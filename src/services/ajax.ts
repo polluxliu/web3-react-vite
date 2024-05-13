@@ -15,8 +15,8 @@ const instance = axios.create({
 });
 
 /**
- * 成功时返回的是服务端数据 ApiResponse ，失败时将异常吃掉，并包装为 ApiResponse 返回
- * 经过拦截器的配置以后，无论是否异常Axios返回的实际数据类型为 Promise<ApiResponse>
+ * 成功时返回的是服务端数据 ApiResponseData , 失败时将异常吃掉, 并包装为 ApiResponseData 返回
+ * 经过拦截器的配置以后, 无论是否异常使用Axios返回的实际数据类型为 Promise<ApiResponseData>
  */
 instance.interceptors.response.use(
   (response) => {
@@ -24,11 +24,11 @@ instance.interceptors.response.use(
     // 对响应数据做点什么
     // console.log(response.status, response.statusText, response);
 
-    const responseMessage = response.data.message;
-    message.info(responseMessage);
-    // console.info("Success:", responseMessage);
+    const data = response.data as ApiResponse;
+    if (data.message) message.info(data.message);
+    // console.info("Success:", data.message);
 
-    return response.data;
+    return response.data.data;
   },
   (error) => {
     /**
@@ -62,7 +62,7 @@ instance.interceptors.response.use(
 
     message.error(response.message);
 
-    return response;
+    return response.data;
   },
 );
 
