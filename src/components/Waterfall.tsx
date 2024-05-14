@@ -44,17 +44,14 @@ const Waterfall: FC = () => {
    */
   const indicator = () => {
     return (
-      !loading &&
-      !hasMore && (
-        <div className="py-3 text-center">
-          {(() => {
-            if (!loading && !hasMore) {
-              if (pageNumber.current === 1) return <Empty />;
-              else return <span>没有更多数据了</span>;
-            }
-          })()}
-        </div>
-      )
+      <div className="py-3 text-center">
+        {loading ? (
+          <Spin />
+        ) : (
+          !hasMore &&
+          (pageNumber.current === 1 ? <Empty /> : <span>没有更多数据了</span>)
+        )}
+      </div>
     );
   };
 
@@ -197,11 +194,6 @@ const Waterfall: FC = () => {
         preload="auto"
         src="blob:https://www.pinterest.com/4dc1235b-0bef-4b99-9844-fc24a5af710e"
       ></video> */}
-      {loading && (
-        <div className="sticky top-0 z-50 text-center">
-          <Spin />
-        </div>
-      )}
       <div
         className="relative mx-auto my-0"
         style={{
