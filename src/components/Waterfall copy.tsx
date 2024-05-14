@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { useRef, useEffect, useState } from "react";
-import { useSize, useDebounceFn, useRequest } from "ahooks";
+import { useSize, useRequest } from "ahooks";
 import { Spin } from "antd";
 import { getItemService } from "../services/items";
 import { useMainElement } from "../layouts/MainLayout";
@@ -24,12 +24,17 @@ type ItemPosition = {
 };
 
 const Waterfall: FC = () => {
-  const wrapperElement = useMainElement();
-  const placeholderRef = useRef<HTMLDivElement>(null);
-  const placeholderSize = useSize(placeholderRef);
+  const xx = useMainElement();
+
+  console.log(xx);
 
   const itemWidthBase: number = 236;
   const gutterBase: number = 16;
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const placeholderRef = useRef<HTMLDivElement>(null);
+
+  const placeholderSize = useSize(placeholderRef);
 
   const columnCount = useRef<number>(0);
   const columnHeights = useRef<number[]>([]);
@@ -40,11 +45,6 @@ const Waterfall: FC = () => {
     containerHeight: number;
   }>();
 
-  /**
-   * 瀑布流布局的计算逻辑
-   * @param items
-   * @param placeholderWidth
-   */
   const calculatePositions = (
     items: WaterfallItem[],
     placeholderWidth: number,
@@ -91,83 +91,18 @@ const Waterfall: FC = () => {
     setContainerSize({ containerWidth, containerHeight });
   };
 
-  /**
-   * 数据列表
-   */
-  const [items, setItems] = useState<WaterfallItem[]>([]);
+  const { loading, data = {} } = useRequest(() => getItemService());
 
-  /**
-   * 当前页码
-   */
-  const pageNumber = useRef<number>(1);
+  const { list } = data as {
+    list: WaterfallItem[];
+    total: number;
+  };
 
-  /**
-   * 服务器端是否还有更多数据
-   */
-  const [hasMore, setHasMore] = useState<boolean>(true);
-
-  /**
-   * 数据获取
-   */
-  const { loading, run: loadItems } = useRequest(
-    async () => {
-      const data = await getItemService({ pageNumber: pageNumber.current });
-      return data;
-    },
-    {
-      manual: true,
-      onSuccess: (result) => {
-        const { list = [] } = result as {
-          list: WaterfallItem[];
-          total: number;
-        };
-        if (list.length > 0) {
-          setItems((prev) => prev.concat(list));
-          ++pageNumber.current;
-          setHasMore(true);
-        } else {
-          setHasMore(false);
-        }
-      },
-    },
-  );
-
-  /**
-   * 滚动条滚动时执行
-   */
-  const { run: loadMore } = useDebounceFn(
-    () => {
-      const scrollTop = wrapperElement!.scrollTop; // scrollTop: 已滚动的距离
-      const clientHeight = wrapperElement!.clientHeight; // clientHeight: div的可视区域高度
-      const scrollHeight = wrapperElement!.scrollHeight; // scrollHeight: div的总内容高度
-      const bottomDistance = scrollHeight - scrollTop - clientHeight; // 计算距离底部的距离
-      // console.log(scrollTop, clientHeight, scrollHeight, bottomDistance);
-      if (!loading && bottomDistance <= 300) loadItems();
-    },
-    { wait: 500 },
-  );
-
-  /**
-   * 组件加载时执行
-   */
-  useEffect(loadItems, [loadItems]);
-
-  /**
-   * 滚动事件绑定到wrapper
-   */
   useEffect(() => {
-    if (hasMore) wrapperElement?.addEventListener("scroll", loadMore);
-    return () => wrapperElement?.removeEventListener("scroll", loadMore);
-  }, [wrapperElement, loadMore, hasMore]);
-
-  /**
-   * 布局瀑布流
-   */
-  useEffect(() => {
-    if (!items || items.length === 0) return;
+    if (!list || list.length === 0) return;
     const placeholderWidth = placeholderRef.current!.clientWidth;
-    calculatePositions(items, placeholderWidth);
-  }, [items, placeholderSize?.width]);
+    calculatePositions(list, placeholderWidth);
+  }, [list, placeholderSize?.width]);
 
   return (
     <>
@@ -178,19 +113,21 @@ const Waterfall: FC = () => {
         src="blob:https://www.pinterest.com/4dc1235b-0bef-4b99-9844-fc24a5af710e"
       ></video> */}
       {loading && (
-        <div className="sticky top-0 z-50 text-center">
+        <div className="p-3 text-center">
           <Spin />
         </div>
       )}
       <div
         className="relative mx-auto my-0"
+        ref={containerRef}
         style={{
           width: containerSize?.containerWidth,
           height: containerSize?.containerHeight,
         }}
       >
-        {items.length > 0 &&
-          items.map((item, index) => {
+        {!loading &&
+          list.length > 0 &&
+          list.map((item, index) => {
             return (
               <div
                 key={item.id}
