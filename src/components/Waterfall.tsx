@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { useRef, useEffect, useState } from "react";
 import { useSize, useDebounceFn, useRequest } from "ahooks";
-import { Spin } from "antd";
+import { Spin, Empty } from "antd";
 import { getItemService } from "../services/items";
 import { useMainElement } from "../layouts/MainLayout";
 
@@ -39,6 +39,26 @@ const Waterfall: FC = () => {
     containerWidth: number;
     containerHeight: number;
   }>();
+
+  /**
+   * 空数据指示器
+   * @returns
+   */
+  const indicator = () => {
+    return (
+      !loading &&
+      !hasMore && (
+        <div className="py-3 text-center">
+          {(() => {
+            if (!loading && !hasMore) {
+              if (pageNumber.current === 1) return <Empty />;
+              else return <span>没有更多数据了</span>;
+            }
+          })()}
+        </div>
+      )
+    );
+  };
 
   /**
    * 瀑布流布局的计算逻辑
@@ -216,6 +236,7 @@ const Waterfall: FC = () => {
             );
           })}
       </div>
+      {indicator()}
       <div ref={placeholderRef}></div>
     </>
   );

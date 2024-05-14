@@ -1,5 +1,6 @@
 import { RouterProvider } from "react-router-dom";
 import routerConfig from "./router";
+import "antd/dist/reset.css";
 
 function App1() {
   return <RouterProvider router={routerConfig}></RouterProvider>;
