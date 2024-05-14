@@ -14,6 +14,18 @@ const instance = axios.create({
   timeout: 10 * 1000,
 });
 
+instance.interceptors.request.use((config) => {
+  // 检查并设置默认的 pageSize 参数
+  if (config.method === "get") {
+    config.params = config.params || {};
+    if (config.params.pageNumber && !config.params.pageSize) {
+      config.params.pageSize = 50;
+    }
+  }
+
+  return config;
+});
+
 /**
  * 成功时返回的是服务端数据 ApiResponseData , 失败时将异常吃掉, 并包装为 ApiResponseData 返回
  * 经过拦截器的配置以后, 无论是否异常使用Axios返回的实际数据类型为 Promise<ApiResponseData>

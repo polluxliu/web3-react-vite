@@ -217,20 +217,18 @@ const Sidebar: FC = () => {
   };
 
   return (
-    <>
-      <aside className={sidebarClass}>
-        <nav className="relative flex h-full flex-col">
-          <div className={controlBarClass} onClick={toggleSidebar}>
-            <div className="flex h-10 w-6 flex-col items-center">
-              <div className="h-5 w-1 translate-y-0.5 rounded-full bg-gray-200 group-hover:rotate-12 group-hover:bg-gray-500"></div>
-              <div className="h-5 w-1 -translate-y-0.5  rounded-full bg-gray-200 group-hover:-rotate-12 group-hover:bg-gray-500"></div>
-            </div>
+    <aside className={sidebarClass}>
+      <nav className="relative flex h-full flex-col">
+        <div className={controlBarClass} onClick={toggleSidebar}>
+          <div className="flex h-10 w-6 flex-col items-center">
+            <div className="h-5 w-1 translate-y-0.5 rounded-full bg-gray-200 group-hover:rotate-12 group-hover:bg-gray-500"></div>
+            <div className="h-5 w-1 -translate-y-0.5  rounded-full bg-gray-200 group-hover:-rotate-12 group-hover:bg-gray-500"></div>
           </div>
-          {renderItems(items)}
-          <div className="p-3 text-center">版权信息</div>
-        </nav>
-      </aside>
-    </>
+        </div>
+        {renderItems(items)}
+        <div className="p-3 text-center">版权信息</div>
+      </nav>
+    </aside>
   );
 };
 

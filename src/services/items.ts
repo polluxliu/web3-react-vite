@@ -2,6 +2,7 @@ import axiosInstance, { ApiResponseData } from "./ajax";
 
 type SearchOptions = {
   pageNumber: number;
+  pageSize: number;
 };
 
 export async function getItemService(

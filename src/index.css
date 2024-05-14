@@ -6,6 +6,10 @@ html {
   @apply m-0 p-0 font-sans text-sm;
 }
 
+body {
+  @apply overflow-hidden; /* for iphone */
+}
+
 #right-arrow::before {
   content: "";
   @apply w-10 bg-gradient-to-r from-transparent to-white;

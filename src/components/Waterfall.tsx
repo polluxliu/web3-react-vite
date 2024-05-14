@@ -3,7 +3,6 @@ import { useRef, useEffect, useState } from "react";
 import { useSize, useDebounceFn, useRequest } from "ahooks";
 import { Spin, Empty } from "antd";
 import { getItemService } from "../services/items";
-import { useMainElement } from "../layouts/MainLayout";
 
 type WaterfallItem = {
   id: string;
@@ -24,7 +23,6 @@ type ItemPosition = {
 };
 
 const Waterfall: FC = () => {
-  const wrapperElement = useMainElement();
   const placeholderRef = useRef<HTMLDivElement>(null);
   const placeholderSize = useSize(placeholderRef);
 
@@ -157,6 +155,7 @@ const Waterfall: FC = () => {
    */
   const { run: loadMore } = useDebounceFn(
     () => {
+      const wrapperElement = placeholderRef.current!.parentElement;
       const scrollTop = wrapperElement!.scrollTop; // scrollTop: 已滚动的距离
       const clientHeight = wrapperElement!.clientHeight; // clientHeight: div的可视区域高度
       const scrollHeight = wrapperElement!.scrollHeight; // scrollHeight: div的总内容高度
@@ -176,9 +175,10 @@ const Waterfall: FC = () => {
    * 滚动事件绑定到wrapper
    */
   useEffect(() => {
+    const wrapperElement = placeholderRef.current!.parentElement;
     if (hasMore) wrapperElement?.addEventListener("scroll", loadMore);
     return () => wrapperElement?.removeEventListener("scroll", loadMore);
-  }, [wrapperElement, loadMore, hasMore]);
+  }, [hasMore, loadMore]);
 
   /**
    * 布局瀑布流

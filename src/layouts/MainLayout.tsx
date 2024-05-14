@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { useState, useEffect, useRef, createContext, useContext } from "react";
-import { Outlet, Link, useOutletContext } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 import { HOME_PATH, MANAGE_PATH } from "../router";
 import { useResponsive, useSize, useHover, useEventListener } from "ahooks";
 import logo from "../assets/react.svg";
@@ -34,11 +34,6 @@ export function useSidebar() {
   return context;
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
-export function useMainElement() {
-  return useOutletContext<HTMLDivElement | null>();
-}
-
 const MainLayout: FC = () => {
   const responsive = useResponsive();
 
@@ -59,8 +54,6 @@ const MainLayout: FC = () => {
   const [maxMenuX, setMaxMenuX] = useState(0);
 
   const isHovering = useHover(menuContainerRef);
-
-  const mainRef = useRef<HTMLDivElement>(null);
 
   useEventListener(
     "wheel",
@@ -198,8 +191,8 @@ const MainLayout: FC = () => {
         >
           <Sidebar />
         </SidebarContext.Provider>
-        <main className="scrollbar flex-auto overflow-auto p-8" ref={mainRef}>
-          <Outlet context={mainRef.current} />
+        <main className="scrollbar flex-auto overflow-auto p-8">
+          <Outlet />
         </main>
       </div>
       {/* <footer>这里是footer</footer> */}
