@@ -1,5 +1,4 @@
-import type { FC } from "react";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, type FC } from "react";
 import { useSize, useDebounceFn, useRequest } from "ahooks";
 import { Spin, Empty } from "antd";
 import { getItemService } from "../services/items";
@@ -132,7 +131,8 @@ const Waterfall: FC = () => {
     {
       manual: true,
       onSuccess: (result) => {
-        const { list = [] } = result as {
+        // 如果请求遇到了异常，返回的可能是undefined。（详情查看ajax.ts）
+        const { list = [] } = (result || {}) as {
           list: WaterfallItem[];
           total: number;
         };

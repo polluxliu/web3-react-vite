@@ -1,4 +1,4 @@
-import axiosInstance, { ApiResponseData } from "./ajax";
+import axiosInstance, { ApiResponseData } from "../utils/ajax";
 
 export async function getQuestionService(): Promise<ApiResponseData> {
   const url = `/api/test`;

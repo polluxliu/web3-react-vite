@@ -1,5 +1,6 @@
 import axios from "axios";
 import { message } from "antd";
+import { getToken } from "./userToken";
 
 export type ApiResponse = {
   message?: string;
@@ -15,6 +16,10 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((config) => {
+  // 获取用户身份令牌
+  const token = getToken();
+  if (token) config.headers["Authorization"] = `Bearer ${token}`;
+
   // 检查并设置默认的 pageSize 参数
   if (config.method === "get") {
     config.params = config.params || {};

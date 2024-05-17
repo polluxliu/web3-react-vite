@@ -12,6 +12,10 @@ import Star from "../pages/manage/Star";
 import Trash from "../pages/manage/Trash";
 import Edit from "../pages/question/Edit";
 import Stat from "../pages/question/Stat";
+import CountReducer from "../pages/demo/CountReducer";
+import TodoReducer from "../pages/demo/TodoReducer";
+import Count from "../pages/demo/redux/Count";
+import TodoList from "../pages/demo/redux/TodoList";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +33,22 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <Register />,
+      },
+      {
+        path: "test",
+        element: <CountReducer />,
+      },
+      {
+        path: "todo",
+        element: <TodoReducer />,
+      },
+      {
+        path: "count-redux",
+        element: <Count />,
+      },
+      {
+        path: "todo-redux",
+        element: <TodoList />,
       },
       {
         path: "manage",

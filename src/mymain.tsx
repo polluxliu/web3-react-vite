@@ -1,8 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+import store from "./store";
+import { configResponsive } from "ahooks";
 import App1 from "./App1";
 import "./index.css";
-import { configResponsive } from "ahooks";
 
 configResponsive({
   sm: 640,
@@ -14,6 +16,8 @@ configResponsive({
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App1 />
+    <Provider store={store}>
+      <App1 />
+    </Provider>
   </React.StrictMode>,
 );
